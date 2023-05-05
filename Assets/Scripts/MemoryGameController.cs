@@ -444,7 +444,7 @@ public class MemoryGameController : MonoBehaviour
     public void SetMemorySprites()
     {
         int id = 0;
-        int duplicatedId = 0;
+        int duplicatedId = Random.Range(0, MemorySprites.Count - 1);
         foreach (GameObject o in ButtonsList)
         {
             id++;
@@ -454,7 +454,8 @@ public class MemoryGameController : MonoBehaviour
             if (id == 2)
             {
                 id = 0;
-                duplicatedId++;
+                MemorySprites.Remove(MemorySprites[duplicatedId]);
+                duplicatedId = Random.Range(0, MemorySprites.Count - 1);
             }
         }
     }
