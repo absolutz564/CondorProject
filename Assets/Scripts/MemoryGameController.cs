@@ -58,6 +58,8 @@ public class MemoryGameController : MonoBehaviour
     public Text CounterText;
     public Text AlertText;
 
+    public Text scaletext;
+
     void Awake()
     {
         NameText.text = PlayerPrefs.GetString("CurrentUser");
@@ -86,18 +88,38 @@ public class MemoryGameController : MonoBehaviour
     {
         AlertText.gameObject.SetActive(false);
     }
+
+    public void FlipAll()
+    {
+        foreach (GameObject cardObject in ButtonsList)
+        {
+            ElementController card = cardObject.GetComponent<ElementController>();
+            StartCoroutine(card.GirarBotao(card.versoImage));
+        }
+    }
+
+    public void UnflipAll()
+    {
+        foreach (GameObject cardObject in ButtonsList)
+        {
+            ElementController card = cardObject.GetComponent<ElementController>();
+            card.Unflip();
+        }
+    }
+
     public IEnumerator StartCountdown()
     {
+        FlipAll();
         AlertText.gameObject.SetActive(false);
         CounterText.gameObject.SetActive(true);
-        int timer = 3;
+        int timer = 5;
         while (timer > 0)
         {
             yield return new WaitForSeconds(1);
             timer--;
             CounterText.text = timer.ToString();
         }
-
+        UnflipAll();
         gameStarted = true;
         CounterText.gameObject.SetActive(false);
     }
@@ -152,7 +174,7 @@ public class MemoryGameController : MonoBehaviour
         }
         else
         {
-            GameGrid.spacing = new Vector2(60, 20);
+            GameGrid.spacing = new Vector2(85, 90);
             gridSizeX = 5;
             gridSizeY = 6;
         }
@@ -236,11 +258,13 @@ public class MemoryGameController : MonoBehaviour
         if (ObjectsFlipped == 1)
         {
             card1 = pickedElement;
+            card1.Flipped = true;
             Debug.Log("Você pegou a primeira carta " + card1.Id);
         }
         else if(ObjectsFlipped == 2)
         {
             card2 = pickedElement;
+            card2.Flipped = true;
             ObjectsFlipped = 0;
             Debug.Log("Você pegou a segunda carta " + card2.Id);
             CheckMatch();
@@ -252,11 +276,11 @@ public class MemoryGameController : MonoBehaviour
         //Verificar se código das cartas são iguais
 
         //Reseta cartas
-        if (card1.Id == card2.Id)
+        if (card1.Id == card2.Id && card1.versoImage.name == card2.versoImage.name)
         {
             SendMessage("+1", true);
-            Debug.Log("Par encontrado");
-            gameTime += 5f;
+            Debug.Log("Par encontrado " + card2.versoImage.name);
+            //gameTime += 5f;
             score++;
             CheckScore();
             card1.Finded = true;
@@ -364,7 +388,8 @@ public class MemoryGameController : MonoBehaviour
 
     void ResetCards() //Use para resetar as cartas
     {
-
+        card1.Flipped = false;
+        card2.Flipped = false;
         card1 = null;
         card2 = null;
     }

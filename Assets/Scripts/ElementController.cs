@@ -18,21 +18,29 @@ public class ElementController : MonoBehaviour
     public RectTransform currentTransform;
     public Vector3 baseScale;
 
+    public Image imagemBotao;
+    Vector3 escala;
+
     void Awake()
     {
         currentTransform = this.GetComponent<RectTransform>();
-        baseScale = new Vector3(1.4f, 1.4f, 1.4f);
+        baseScale = new Vector3(2f, 2f, 2f);
     }
     // Start is called before the first frame update
     void Start()
     {
-
+        imagemBotao = this.GetComponent<Image>();
+        escala = imagemBotao.GetComponent<RectTransform>().localScale;
+        //MemoryGameController.Instance.scaletext.text = escala.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        //if (imagemBotao)
+        //{
+        //    MemoryGameController.Instance.scaletext.text = imagemBotao.GetComponent<RectTransform>().localScale.ToString();
+        //}
     }
     public void OnButtonClick()
     {
@@ -41,9 +49,12 @@ public class ElementController : MonoBehaviour
             if (MemoryGameController.Instance.CanClick && (MemoryGameController.Instance.card1 == null ||
                                                            MemoryGameController.Instance.card2 == null))
             {
-                MemoryGameController.Instance.ResetCanClick();
-                StartCoroutine(GirarBotao(versoImage));
-                MemoryGameController.Instance.AddFlipped(this);
+                if (!Flipped && !Finded)
+                {
+                    MemoryGameController.Instance.ResetCanClick();
+                    StartCoroutine(GirarBotao(versoImage));
+                    MemoryGameController.Instance.AddFlipped(this);
+                }
             }
         }
         else
@@ -54,6 +65,11 @@ public class ElementController : MonoBehaviour
 
             }
         }
+    }
+
+    public void Unflip()
+    {
+        StartCoroutine(VoltarBotao(Front));
     }
 
     public void Reset()
@@ -68,10 +84,6 @@ public class ElementController : MonoBehaviour
         float duracao = 0.5f; // Duração da animação de giro
         float anguloInicial = 0; // Angulo inicial do botão
         float anguloFinal = 180; // Angulo final do botão
-
-        // Referencia ao componente Image do botão
-        Image imagemBotao = GetComponent<Image>();
-        Vector3 escala = imagemBotao.GetComponent<RectTransform>().localScale;
 
         // Animação de giro
         float tempoDecorrido = 0;
