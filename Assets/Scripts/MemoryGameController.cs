@@ -60,6 +60,21 @@ public class MemoryGameController : MonoBehaviour
 
     public Text scaletext;
 
+    public InputField input1;
+    public InputField input2;
+    public InputField input3;
+
+    //public void SetValues()
+    //{
+    //    float value = float.Parse(input1.text);
+    //    float value2 = float.Parse(input2.text);
+    //    float value3 = float.Parse(input3.text);
+    //    Debug.Log(value);
+
+    //    GameGrid.spacing = new Vector2(value, value2);
+    //    GameGrid.cellSize = new Vector2(value3, value3);
+    //}
+
     void Awake()
     {
         NameText.text = PlayerPrefs.GetString("CurrentUser");
@@ -168,13 +183,13 @@ public class MemoryGameController : MonoBehaviour
             gridSizeY = 4;
         } else if (Difficulty == 2)
         {
-            GameGrid.spacing = new Vector2(90, 110);
+            GameGrid.spacing = new Vector2(115, 115);
             gridSizeX = 4;
             gridSizeY = 5;
         }
         else
         {
-            GameGrid.spacing = new Vector2(85, 90);
+            GameGrid.spacing = new Vector2(115, 112);
             gridSizeX = 5;
             gridSizeY = 6;
         }
